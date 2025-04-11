@@ -1,6 +1,6 @@
 {
   "name": "marked-wikirefs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "marked extension to add wikirefs (including [[wikilinks]])",
   "license": "GPL-3.0",
   "author": {
@@ -29,7 +29,7 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "marked": "^15.0.4",
-    "wikirefs": "^0.0.4"
+    "wikirefs": "^0.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
@@ -47,6 +47,7 @@
     "@typescript-eslint/parser": "^5.42.1",
     "del-cli": "^5.0.0",
     "eslint": "^8.27.0",
+    "marked-footnote": "^1.2.4",
     "mocha": "^10.0.0",
     "nyc": "^15.1.0",
     "prettier": "^2.5.1",
@@ -62,8 +63,8 @@
     "bidirectional links",
     "internal link",
     "internal links",
-    "markdown-it-plugin",
-    "markdown-it",
+    "markded-plugin",
+    "markded",
     "personal wiki",
     "ref",
     "refs",

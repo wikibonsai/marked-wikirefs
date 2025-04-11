@@ -2621,6 +2621,11 @@ map-obj@^4.1.0:
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-4.3.0.tgz#9304f906e93faae70880da102a9f1df0ea8bb05a"
   integrity sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==
 
+marked-footnote@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/marked-footnote/-/marked-footnote-1.2.4.tgz#fcf534467fc9e0fb5a83bce44747cf3849561998"
+  integrity sha512-DB2Kl+wFh6YwZd70qABMY6WUkG1UuyqoNTFoDfGyG79Pz24neYtLBkB+45a7o72V7gkfvbC3CGzIYFobxfMT1Q==
+
 marked@^15.0.4:
   version "15.0.4"
   resolved "https://registry.yarnpkg.com/marked/-/marked-15.0.4.tgz#864dbf50227b6507646c771c2ef5f0de2924833e"
@@ -3538,10 +3543,10 @@ wikirefs-spec@^0.0.4-spec:
   resolved "https://registry.yarnpkg.com/wikirefs-spec/-/wikirefs-spec-0.0.4-spec.tgz#0114e9c9ba7eacff10356aa9b89cfb8ec271417e"
   integrity sha512-ZNGCfCZjd2b/DGlEPHM9wSTVxcSHdDVotiIE0QXqP5/AWqZlE43W7s/vdYQFxCyYnMO0VWS8H/GGsIoIVB3jUg==
 
-wikirefs@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/wikirefs/-/wikirefs-0.0.4.tgz#edf0163c15e72e644fc6e36339b7fa4d362cd811"
-  integrity sha512-R4rKxGToR5ejpNKVfTOzhcKHvWR+4F3WaAy+ACWvDiDIrspWjabXdepWSYrbnrBlzorjMVUT98KVw9nJi8UAMQ==
+wikirefs@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/wikirefs/-/wikirefs-0.0.7.tgz#c4c1aab91bca326291e91e13417298d91f353008"
+  integrity sha512-eET3t8iMvbT5pgXolEvdCMYFIaw13YkYMRzgzLmohjuE649vkSsIQ8sevlnvgh2DtID/X+vRCI16lSO7IJXlLQ==
   dependencies:
     escape-mkdn "^0.0.3"
 
