@@ -21,7 +21,7 @@ $ npm install marked-wikirefs
 
 ```js
 import { marked } from 'marked';
-import wikirefs from 'marked-wikirefs';
+import wikirefsExtension from 'marked-wikirefs';
 
 const options = {
   resolveHtmlHref: (fname) => {
@@ -38,7 +38,7 @@ const options = {
 };
 
 // Add the wikirefs extension to marked
-marked.use(wikirefs(options));
+marked.use(wikirefsExtension(options));
 
 // Now parse markdown with wikirefs
 const html = marked.parse('[[wikilink]]');
