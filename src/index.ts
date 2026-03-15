@@ -18,7 +18,7 @@ export default function wikirefsExtension(opts: Partial<WikiRefsOptions> = {}): 
       fname = fname.replace(extname, '');
       return '/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + extname;
     },
-    resolveEmbedContent: async (fname: string) => fname + ' content',
+    resolveEmbedContent: (fname: string, _header?: string) => Promise.resolve(fname + ' content'),
     baseUrl: '',
     cssNames: {
       // wiki

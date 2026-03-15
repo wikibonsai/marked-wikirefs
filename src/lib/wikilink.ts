@@ -22,19 +22,25 @@ export function wikilinks(opts: any = {}): MarkedExtension {
             raw: match[0],
             linktype: match[1] ? match[1].trim() : null,
             filename: match[2],
-            label: match[3],
+            header: match[3],
+            label: match[4],
           };
           return token;
         },
         renderer(token: any) {
-          // token fields
+          // token fields (LINK regex: 1=linktype, 2=filename, 3=header, 4=label)
           const raw: string = token.raw;
           const filename: string = token.filename;
           const linktype: string | null = token.linktype;
+          const header: string | undefined = token.header;
           const label: string | null = token.label;
-          // opts
+          // opts (resolve using filename only; append #header fragment when present)
           const cssNames: any = opts.cssNames || {};
-          const htmlHref: string = opts.resolveHtmlHref ? opts.resolveHtmlHref(filename) : '/' + filename;
+          let htmlHref: string | undefined = opts.resolveHtmlHref ? opts.resolveHtmlHref(filename) : '/' + filename;
+          if (htmlHref && header && header.length > 0) {
+            const headerSlug: string = header.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            htmlHref = htmlHref + '#' + headerSlug;
+          }
           const htmlText: string | undefined = opts.resolveHtmlText ? opts.resolveHtmlText(filename) : filename;
           const doctype: string | undefined = opts.resolveDocType ? opts.resolveDocType(filename) : '';
           // invalid

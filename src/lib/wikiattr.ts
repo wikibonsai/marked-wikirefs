@@ -5,8 +5,8 @@ import type { WikiRefsOptions, AttributeCollection } from './types';
 
 
 export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
+  
   const attributeCollection: AttributeCollection = {};
-
   // helpers
 
   function addToCollection(attrtype: string, filename: string): void {
@@ -25,16 +25,16 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
     if (Object.keys(attributeCollection).length === 0) {
       return '';
     }
-    
+
     const cssNames: any = opts.cssNames || {};
     let attrboxHtml: string = `<aside class="${cssNames.attrbox || 'attrbox'}">\n`;
     attrboxHtml += `<span class="${cssNames.attrboxTitle || 'attrbox-title'}">${opts.attrs?.title || 'Attributes'}</span>\n`;
     attrboxHtml += '<dl>\n';
-    
+
     // Render each attribute type and its values
     for (const attrType in attributeCollection) {
       attrboxHtml += `<dt>${attrType}</dt>\n`;
-      
+
       for (const filename of attributeCollection[attrType]) {
         const htmlHref: string | undefined = opts.resolveHtmlHref(filename);
         const htmlText: string | undefined = opts.resolveHtmlText(filename) ? opts.resolveHtmlText(filename) : filename;
@@ -43,6 +43,7 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
         if (htmlHref === undefined) {
           const wikitext = filename || 'error';
           attrboxHtml += `<dd><a class="${cssNames.attr || 'attr'} ${cssNames.wiki || 'wiki'} ${cssNames.invalid || 'invalid'}">[[${wikitext}]]</a></dd>\n`;
+
         // valid
         } else {
           const cssClassArray: string[] = [];
@@ -63,7 +64,7 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
         }
       }
     }
-    
+
     attrboxHtml += '</dl>\n</aside>\n';
     return attrboxHtml;
   }
@@ -77,32 +78,32 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
     if (position < 0 || position >= content.length) {
       return false;
     }
-    
+
     // Get the first line of the matched text (this is what we check for context patterns)
     const firstLine: string = matchedText.split('\n')[0];
-    
+
     // Check for invalid contexts in the first line
-    
+
     // Bullet list item (- * +)
     if (/^ *[-*+]\s/.test(firstLine)) {
       return false;
     }
-    
+
     // Numbered list item (1. 2. etc)
     if (/^ *\d+[.)]\s/.test(firstLine)) {
       return false;
     }
-    
+
     // Blockquote
     if (/^ *>\s/.test(firstLine)) {
       return false;
     }
-    
+
     // Indented code block (4+ spaces or tab)
     if (/^ {4,}|\t/.test(firstLine)) {
       return false;
     }
-    
+
     // Fenced code block (```)
     if (content.includes('```')) {
       const codeFenceStr = '```'; // Simplify for reliability
@@ -119,7 +120,7 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
         }
       }
     }
-    
+
     // Code span (inline code with backticks)
     if (content.includes('`')) {
       const charsBeforePosition = content.substring(0, position);
@@ -132,7 +133,7 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
         return false;
       }
     }
-    
+
     return true;
   }
 
@@ -144,7 +145,7 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
         Object.keys(attributeCollection).forEach(key => {
           delete attributeCollection[key];
         });
-        
+
         // Find all wikiattrs
         const attrsGottaCatchEmAll: RegExp = new RegExp(wikirefs.RGX.WIKI.ATTR, 'gim');
         const singlesGottaCatchEmAll: RegExp = new RegExp(wikirefs.RGX.WIKI.BASE, 'gim');
@@ -156,18 +157,19 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
         while ((attrMatch = attrsGottaCatchEmAll.exec(markdown)) !== null) {
           const matchText: string = attrMatch[0];
           const start: number = attrMatch.index;
-          
+
           if (isTop(markdown, start, matchText)) {
             // valid context - process for attribute collection
             const attrtype: string = attrMatch[1].trim();
-            
-            // Extract wikilinks
+
+            // Extract wikilinks (reset lastIndex when reusing regex on a new string)
+            singlesGottaCatchEmAll.lastIndex = 0;
             let fnameMatch: RegExpExecArray | null;
             while ((fnameMatch = singlesGottaCatchEmAll.exec(matchText)) !== null) {
               const filename = fnameMatch[1];
               addToCollection(attrtype, filename);
             }
-            
+
             // We don't want this to render in the document, so we'll replace it
             replacements.push({
               start: start,
@@ -181,31 +183,35 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
             // No escaping needed - just leave it as is
           }
         }
-
         // Apply replacements in reverse order to not mess up positions
         replacements.sort((a, b) => b.start - a.start);
-        
+
         for (const r of replacements) {
           modified = 
             modified.substring(0, r.start) + 
             r.replacement + 
             modified.substring(r.end);
         }
-        
+
         return modified;
       },
-      
+
       postprocess(html) {
         // Render attribute box
         const attrboxHtml: string = renderAttributeBox();
         const hasAttrbox: boolean = html.includes(`class="${opts.cssNames?.attrbox || 'attrbox'}"`);
         const doRender: boolean = !!(opts.attrs && opts.attrs.render !== false);
-        
-        // No need to "restore" anything since we didn't escape in the first place
-        
-        return (doRender && attrboxHtml && !hasAttrbox) 
-          ? attrboxHtml + html 
+
+        const result: string = (doRender && attrboxHtml && !hasAttrbox)
+          ? attrboxHtml + html
           : html;
+
+        // Clear collection after use so state does not leak between parses/tests
+        Object.keys(attributeCollection).forEach((key) => {
+          delete attributeCollection[key];
+        });
+
+        return result;
       }
     }
   };

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 
-import { marked } from 'marked';
+import { Marked, marked } from 'marked';
 import markedFootnote from 'marked-footnote';
 import * as wikirefs from 'wikirefs';
 import type { WikiRefTestCase, TestFileData } from 'wikirefs-spec';
@@ -14,8 +14,8 @@ import { makeMockOptsForRenderOnly } from '../config';
 // setup
 
 let cycleStack: string[] = [];
+let md: ((src: string) => Promise<string>) & { parse: (src: string, opt?: unknown) => Promise<string> };
 let mockOpts: Partial<WikiRefsOptions>;
-let md: typeof marked;
 
 async function run(contextMsg: string, tests: WikiRefTestCase[]): Promise<void> {
   context(contextMsg, () => {
@@ -125,9 +125,13 @@ describe('marked-wikirefs', () => {
     mockOpts = {
       ...makeMockOptsForRenderOnly(),
       // note: it ain't pretty, but it gets the job done...
-      resolveEmbedContent: async function(filename: string): Promise<string | undefined> {
+      resolveEmbedContent: async function(filename: string, header?: string): Promise<string | undefined> {
         // markdown-only
         if (wikirefs.isMedia(filename)) { return; }
+        // section embed: when header is provided, return section content per spec
+        if (filename === 'embed-doc' && header && header.trim().length > 0) {
+          return '<p>Content of that section only.</p>\n';
+        }
         // cycle detection
         if (!cycleStack) {
           cycleStack = [];
@@ -155,15 +159,14 @@ describe('marked-wikirefs', () => {
         return htmlContent;
       },
     };
-
-    /* eslint-disable indent */
-    md = marked.setOptions({
-                 gfm: true,
-                 async: true,
-               })
-               .use(markedFootnote()) // todo: this doesn't seem to be working...?
-               .use(wikirefsExtension(mockOpts));
-    /* eslint-enable indent */
+    // Use a fresh Marked instance per test so hooks are not accumulated (marked singleton would chain preprocess/postprocess on each beforeEach)
+    const markedInstance = new Marked();
+    markedInstance.setOptions({ gfm: true, async: true });
+    markedInstance.use(markedFootnote()); // todo: this doesn't seem to be working...?
+    markedInstance.use(wikirefsExtension(mockOpts));
+    const parseFn = (src: string, opt?: unknown) => markedInstance.parse(src, opt as never);
+    (parseFn as typeof md).parse = (src: string, opt?: unknown) => markedInstance.parse(src, opt as never);
+    md = parseFn as typeof md;
   });
 
   describe('render; mkdn -> html', () => {

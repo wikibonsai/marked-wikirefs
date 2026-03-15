@@ -2,11 +2,15 @@ import type { MarkedExtension } from 'marked';
 import path from 'path';
 import * as wikirefs from 'wikirefs';
 
+interface EmbedPlaceholder {
+  filename: string;
+  header?: string;
+}
 
 export function wikiembeds(opts: any = {}): MarkedExtension {
-  // track placeholders we need to process
-  const embedPlaceholders: Map<string, string> = new Map();
-  
+  // track placeholders we need to process (id -> { filename, optional header })
+  const embedPlaceholders: Map<string, EmbedPlaceholder> = new Map();
+
   return {
     async: true,
     extensions: [
@@ -24,16 +28,23 @@ export function wikiembeds(opts: any = {}): MarkedExtension {
           }
           const matchText: string = match[0];
           const filenameText: string = match[1];
+          const headerText: string | undefined = match[2];
           return {
             type: 'wikiembeds',
             raw: matchText,
-            filename: filenameText
+            filename: filenameText,
+            header: headerText
           };
         },
         renderer(token: any) {
           const filename: string = token.filename;
+          const header: string | undefined = token.header;
           const cssNames: any = opts.cssNames || {};
-          const htmlHref: string | undefined = opts.resolveHtmlHref ? opts.resolveHtmlHref(filename) : '/' + filename;
+          let htmlHref: string | undefined = opts.resolveHtmlHref ? opts.resolveHtmlHref(filename) : '/' + filename;
+          if (htmlHref && header) {
+            const headerSlug: string = header.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            htmlHref = htmlHref + '#' + headerSlug;
+          }
           const htmlText: string | undefined = (opts.resolveHtmlText && opts.resolveHtmlText(filename)) ? opts.resolveHtmlText(filename) : filename;
           const doctype: string | undefined = opts.resolveDocType  ? opts.resolveDocType(filename) : '';
           // Handle media embeds (audio, image, video)
@@ -96,11 +107,11 @@ export function wikiembeds(opts: any = {}): MarkedExtension {
             html += `<i class="${cssNames.linkIcon || 'link-icon'}"></i>\n</a>\n</div>\n`;
             // Content
             html += `<div class="${cssNames.embedContent || 'embed-content'}">\n`;
-            html += `<div id="${placeholderId}" class="embed-placeholder" data-filename="${filename}">Loading content for '${filename}'...</div>\n`;
+            html += `<div id="${placeholderId}" class="embed-placeholder" data-filename="${filename}"${header !== undefined ? ` data-header="${header}"` : ''}>Loading content for '${filename}'...</div>\n`;
             html += '</div>\n';
             html += '</div>\n</p>\n';
             // Register this placeholder for processing
-            embedPlaceholders.set(placeholderId, filename);
+            embedPlaceholders.set(placeholderId, { filename, header });
             // Add metadata if needed
             if (opts.addEmbed) {
               opts.addEmbed(filename);
@@ -117,12 +128,12 @@ export function wikiembeds(opts: any = {}): MarkedExtension {
           return html;
         }
         // Make a copy to avoid modifying the Map while iterating
-        const placeholdersToProcess: Map<string, string> = new Map(embedPlaceholders);
+        const placeholdersToProcess: Map<string, EmbedPlaceholder> = new Map(embedPlaceholders);
         let processedHtml: string = html;
         // Clear the global placeholders map before processing
         embedPlaceholders.clear();
         // Process each placeholder
-        for (const [placeholderId, filename] of placeholdersToProcess.entries()) {
+        for (const [placeholderId, { filename, header }] of placeholdersToProcess.entries()) {
           // Much more specific regex that exactly matches only our placeholder
           const placeholderRegex: RegExp = new RegExp(`<div id="${placeholderId}" class="embed-placeholder"[^>]*>[^<]*</div>`, 'g');
           const errorString: string = (opts.embeds?.errorContent || 'Error: Content not found for ') + '\'' + filename + '\'';
@@ -132,7 +143,7 @@ export function wikiembeds(opts: any = {}): MarkedExtension {
             continue;
           }
           try {
-            const embedContent: string | undefined = await opts.resolveEmbedContent(filename);
+            const embedContent: string | undefined = await opts.resolveEmbedContent(filename, header);
             if (embedContent) {
               // Replace only the exact placeholder, not any potential content with similar structure
               processedHtml = processedHtml.replace(placeholderRegex, () => embedContent);
