@@ -42,7 +42,7 @@ describe('marked-wikirefs', () => {
         testcase.html = testcase.html.replace(/<p>(.*?)\n<p>/g, '<p>$1<p>');
       }
       // for tables...
-      if (testcase.descr.includes('; tables')) {
+      if (testcase.descr.includes('table')) {
         // ...marked does not insert newlines after table body html tags
         testcase.html = testcase.html.replace('<tbody>\n', '<tbody>');
         testcase.html = testcase.html.replace('</tbody>\n', '</tbody>');
@@ -97,6 +97,68 @@ describe('marked-wikirefs', () => {
                             '</ol>\n' +
                             '</section>\n';
           }
+          // wikiembed; full-doc with footnote
+          if (testcase.descr === 'wikiembed; w/ other mkdn constructs; gfm; footnote') {
+            testcase.html =
+              '<p><p>\n' +
+              '<div class="embed-wrapper">\n' +
+              '<div class="embed-title">\n' +
+              '<a class="wiki embed" href="/tests/fixtures/embed-doc-mkdn-footnote" data-href="/tests/fixtures/embed-doc-mkdn-footnote">\n' +
+              'embed doc mkdn footnote\n' +
+              '</a>\n' +
+              '</div>\n' +
+              '<div class="embed-link">\n' +
+              '<a class="embed-link-icon" href="/tests/fixtures/embed-doc-mkdn-footnote" data-href="/tests/fixtures/embed-doc-mkdn-footnote">\n' +
+              '<i class="link-icon"></i>\n' +
+              '</a>\n' +
+              '</div>\n' +
+              '<div class="embed-content">\n' +
+              '<p>Body<sup><a id="footnote-ref-1" href="#footnote-1" data-footnote-ref aria-describedby="footnote-label">1</a></sup>.</p>\n' +
+              '<section class="footnotes" data-footnotes>\n' +
+              '<h2 id="footnote-label" class="sr-only">Footnotes</h2>\n' +
+              '<ol>\n' +
+              '<li id="footnote-1">\n' +
+              '<p>note text <a href="#footnote-ref-1" data-footnote-backref aria-label="Back to reference 1">↩</a></p>\n' +
+              '</li>\n' +
+              '</ol>\n' +
+              '</section>\n' +
+              '\n' +
+              '</div>\n' +
+              '</div>\n' +
+              '</p>\n' +
+              '</p>\n';
+          }
+          // wikiembed; header section with footnote
+          if (testcase.descr === 'wikiembed; w/ other mkdn constructs; header; gfm; section w/ footnote') {
+            testcase.html =
+              '<p><p>\n' +
+              '<div class="embed-wrapper">\n' +
+              '<div class="embed-title">\n' +
+              '<a class="wiki embed" href="/tests/fixtures/embed-doc-header-mkdn#footnote" data-href="/tests/fixtures/embed-doc-header-mkdn#footnote">\n' +
+              'embed doc header constructs\n' +
+              '</a>\n' +
+              '</div>\n' +
+              '<div class="embed-link">\n' +
+              '<a class="embed-link-icon" href="/tests/fixtures/embed-doc-header-mkdn#footnote" data-href="/tests/fixtures/embed-doc-header-mkdn#footnote">\n' +
+              '<i class="link-icon"></i>\n' +
+              '</a>\n' +
+              '</div>\n' +
+              '<div class="embed-content">\n' +
+              '<p>Body<sup><a id="footnote-ref-1" href="#footnote-1" data-footnote-ref aria-describedby="footnote-label">1</a></sup>.</p>\n' +
+              '<section class="footnotes" data-footnotes>\n' +
+              '<h2 id="footnote-label" class="sr-only">Footnotes</h2>\n' +
+              '<ol>\n' +
+              '<li id="footnote-1">\n' +
+              '<p>note text <a href="#footnote-ref-1" data-footnote-backref aria-label="Back to reference 1">↩</a></p>\n' +
+              '</li>\n' +
+              '</ol>\n' +
+              '</section>\n' +
+              '\n' +
+              '</div>\n' +
+              '</div>\n' +
+              '</p>\n' +
+              '</p>\n';
+          }
           if (testcase.descr === 'wikiattr; unprefixed; w/ other mkdn constructs; nested; gfm; footnote') {
             testcase.html = '<section class="footnotes" data-footnotes>\n' +
                             '<h2 id="footnote-label" class="sr-only">Footnotes</h2>\n' +
@@ -125,13 +187,9 @@ describe('marked-wikirefs', () => {
     mockOpts = {
       ...makeMockOptsForRenderOnly(),
       // note: it ain't pretty, but it gets the job done...
-      resolveEmbedContent: async function(filename: string, header?: string): Promise<string | undefined> {
+      resolveEmbedContent: async function(filename: string, hText?: string | undefined): Promise<string | undefined> {
         // markdown-only
         if (wikirefs.isMedia(filename)) { return; }
-        // section embed: when header is provided, return section content per spec
-        if (filename === 'embed-doc' && header && header.trim().length > 0) {
-          return '<p>Content of that section only.</p>\n';
-        }
         // cycle detection
         if (!cycleStack) {
           cycleStack = [];
@@ -145,7 +203,18 @@ describe('marked-wikirefs', () => {
         cycleStack.push(filename);
         // get content
         const fakeFile: TestFileData | undefined = fileDataMap.find((fileData: TestFileData) => fileData.filename === filename);
-        const mkdnContent: string | undefined = fakeFile ? fakeFile.content : undefined;
+        let mkdnContent: string | undefined = fakeFile ? fakeFile.content : undefined;
+        // section extraction via header
+        if (mkdnContent && hText && hText.trim().length > 0) {
+          const section: string | undefined = wikirefs.getHeaderSection(mkdnContent, hText);
+          if (section !== undefined) {
+            mkdnContent = section;
+          } else {
+            // reset stack before leaving
+            cycleStack = [];
+            return (mockOpts.embeds?.errorContent || 'Error: Content not found for ') + '\'' + filename + '\'';
+          }
+        }
         let htmlContent: string | undefined;
         if (mkdnContent === undefined) {
           htmlContent = undefined;

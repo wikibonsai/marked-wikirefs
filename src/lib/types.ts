@@ -3,8 +3,7 @@ export interface WikiRefsOptions {
   resolveHtmlText: (fname: string) => string | undefined;
   resolveHtmlHref: (fname: string) => string | undefined;
   resolveDocType?: (fname: string) => string | undefined;
-  // embed-only (header is optional fragment, e.g. ![[file#section]])
-  resolveEmbedContent?: (fname: string, header?: string) => Promise<string | undefined>;
+  resolveEmbedContent?: (fname: string, hText?: string | undefined) => Promise<string | undefined>;
   // metadata functions
   addAttr?: (attrType: string, fname: string) => void;
   addLink?: (linkType: string, fname: string) => void;

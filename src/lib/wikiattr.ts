@@ -147,30 +147,22 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
         });
 
         // Find all wikiattrs
-        const attrsGottaCatchEmAll: RegExp = new RegExp(wikirefs.RGX.WIKI.ATTR, 'gim');
-        const singlesGottaCatchEmAll: RegExp = new RegExp(wikirefs.RGX.WIKI.BASE, 'gim');
-        let attrMatch: RegExpExecArray | null;
+        const attrMatches = wikirefs.RGX.WIKI.ATTR(markdown);
         let modified: string = markdown;
         const replacements: any[] = [];
 
-        // First pass - collect attributes and identify invalid contexts
-        while ((attrMatch = attrsGottaCatchEmAll.exec(markdown)) !== null) {
-          const matchText: string = attrMatch[0];
-          const start: number = attrMatch.index;
-
-          if (isTop(markdown, start, matchText)) {
+        // Collect attributes and identify invalid contexts
+        for (const am of attrMatches) {
+          if (isTop(markdown, am.start, am.text)) {
             // valid context - process for attribute collection
-            const attrtype: string = attrMatch[1].trim();
-
-            // Extract wikilinks (reset lastIndex when reusing regex on a new string)
-            singlesGottaCatchEmAll.lastIndex = 0;
-            let fnameMatch: RegExpExecArray | null;
-            while ((fnameMatch = singlesGottaCatchEmAll.exec(matchText)) !== null) {
-              const filename = fnameMatch[1];
+            const attrtype: string = am.type[0].trim();
+            for (const [filename] of am.filenames) {
               addToCollection(attrtype, filename);
             }
 
             // We don't want this to render in the document, so we'll replace it
+            const matchText: string = am.text;
+            const start: number = am.start;
             replacements.push({
               start: start,
               end: start + matchText.length,

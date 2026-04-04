@@ -1566,9 +1566,9 @@ camelcase@^6.0.0, camelcase@^6.3.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001317, caniuse-lite@^1.0.30001328, caniuse-lite@^1.0.30001400:
-  version "1.0.30001431"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001431.tgz#e7c59bd1bc518fae03a4656be442ce6c4887a795"
-  integrity sha512-zBUoFU0ZcxpvSt9IU66dXVT/3ctO1cy4y9cscs1szkPlcWb6pasYM144GqrUygUbT+k7cmUCW61cvskjcv0enQ==
+  version "1.0.30001778"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001778.tgz"
+  integrity sha512-PN7uxFL+ExFJO61aVmP1aIEG4i9whQd4eoSCebav62UwDyp5OHh06zN4jqKSMePVgxHifCw1QJxdRkA1Pisekg==
 
 chalk@^2.0.0:
   version "2.4.2"
@@ -3538,15 +3538,15 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
-wikirefs-spec@^0.0.4-spec:
-  version "0.0.4-spec"
-  resolved "https://registry.yarnpkg.com/wikirefs-spec/-/wikirefs-spec-0.0.4-spec.tgz#0114e9c9ba7eacff10356aa9b89cfb8ec271417e"
-  integrity sha512-ZNGCfCZjd2b/DGlEPHM9wSTVxcSHdDVotiIE0QXqP5/AWqZlE43W7s/vdYQFxCyYnMO0VWS8H/GGsIoIVB3jUg==
+wikirefs-spec@^0.0.5-spec:
+  version "0.0.5-spec"
+  resolved "https://registry.yarnpkg.com/wikirefs-spec/-/wikirefs-spec-0.0.5-spec.tgz#6d291c9746440f88cc360d4771fa511c3270828e"
+  integrity sha512-POaCb18YFRfXEYLM5OkPogv1/T0/r/doGZHpVxyorWME11HBFxosXH/yUIT4Jm9Npdvubw+du1j7St46pWFDEA==
 
-wikirefs@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/wikirefs/-/wikirefs-0.0.7.tgz#c4c1aab91bca326291e91e13417298d91f353008"
-  integrity sha512-eET3t8iMvbT5pgXolEvdCMYFIaw13YkYMRzgzLmohjuE649vkSsIQ8sevlnvgh2DtID/X+vRCI16lSO7IJXlLQ==
+wikirefs@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/wikirefs/-/wikirefs-0.0.8.tgz#1b8738d13334390d346badbe0f0c6c938d29e93e"
+  integrity sha512-vGqW+klNCWBbrXa4oKXdJKvRf40VpBr6u49FVpHCO/KFfpCBfua9j/mn0PyuPT0KYbqrBKJzMCOqT2+eeq2v6A==
   dependencies:
     escape-mkdn "^0.0.3"
 
