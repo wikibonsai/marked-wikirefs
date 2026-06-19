@@ -29,7 +29,7 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "marked": "^15.0.4",
-    "wikirefs": "^0.0.8"
+    "wikirefs": "^0.0.9"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
@@ -56,7 +56,7 @@
     "sinon": "^14.0.0",
     "ts-node": "^10.7.0",
     "typescript": "^4.5.5",
-    "wikirefs-spec": "^0.0.5-spec"
+    "wikirefs-spec": "^0.0.6-spec"
   },
   "keywords": [
     "bidirectional link",

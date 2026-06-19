@@ -28,11 +28,11 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
 
     const cssNames: any = opts.cssNames || {};
     let attrboxHtml: string = `<aside class="${cssNames.attrbox || 'attrbox'}">\n`;
-    attrboxHtml += `<span class="${cssNames.attrboxTitle || 'attrbox-title'}">${opts.attrs?.title || 'Attributes'}</span>\n`;
     attrboxHtml += '<dl>\n';
 
     // Render each attribute type and its values
     for (const attrType in attributeCollection) {
+      attrboxHtml += '<div class="attr-item">\n';
       attrboxHtml += `<dt>${attrType}</dt>\n`;
 
       for (const filename of attributeCollection[attrType]) {
@@ -63,6 +63,7 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
           attrboxHtml += `<dd><a class="${css}" href="${opts.baseUrl || ''}${htmlHref}" data-href="${opts.baseUrl || ''}${htmlHref}">${htmlText}</a></dd>\n`;
         }
       }
+      attrboxHtml += '</div>\n';
     }
 
     attrboxHtml += '</dl>\n</aside>\n';
