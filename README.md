@@ -21,13 +21,12 @@ $ npm install marked-wikirefs
 
 ```js
 import { marked } from 'marked';
-import path from 'path';
 import * as wikirefs from 'wikirefs';
 import wikirefsExtension from 'marked-wikirefs';
 
 const options = {
   resolveHtmlHref: (fname) => {
-    const extname = wikirefs.isMedia(fname) ? path.extname(fname) : '';
+    const extname = wikirefs.isMedia(fname) ? fname.slice(fname.lastIndexOf('.')) : '';
     fname = fname.replace(extname, '');
     return '/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + extname;
   },
@@ -74,7 +73,7 @@ For render output:
 - `resolveEmbedContent`
 
 For `wikiembeds` -- note:
-- [`path.extname(filename)`](https://nodejs.org/api/path.html#pathextnamepath) is used to identify the file extension which determines how the embed should be formatted.
+- The file extension is used to identify how the embed should be formatted (audio, image, video, or markdown).
 - Embeds are rendered in two phases: the initial pass injects placeholder divs; the async `postprocess` hook then calls `resolveEmbedContent` and replaces each placeholder with the resolved content. Handle self-references and cycles when re-using the same marked instance to render that content.
 - For section embeds (`![[file#section]]`), `resolveEmbedContent(fname, hText)` receives the optional `hText` so you can return only that section’s HTML.
 

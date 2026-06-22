@@ -1,6 +1,10 @@
 import type { MarkedExtension } from 'marked';
-import path from 'path';
 import * as wikirefs from 'wikirefs';
+
+function extname(fname: string): string {
+  const idx: number = fname.lastIndexOf('.');
+  return idx >= 0 ? fname.slice(idx) : '';
+}
 
 interface EmbedPlaceholder {
   filename: string;
@@ -50,8 +54,8 @@ export function wikiembeds(opts: any = {}): MarkedExtension {
           // Handle media embeds (audio, image, video)
           if (wikirefs.isMedia(filename)) {
             const filenameSlug: string = filename.trim().toLowerCase().replace(/ /g, '-');
-            const mediaExt: string = path.extname(filename).toLowerCase();
-            const mime: string = path.extname(filename).replace('.', '').toLowerCase();
+            const mediaExt: string = extname(filename).toLowerCase();
+            const mime: string = extname(filename).replace('.', '').toLowerCase();
             let html: string = `<p>\n<span class="${cssNames.embedMedia || 'embed-media'}" src="${filenameSlug}" alt="${filenameSlug}">\n`;
             if (wikirefs.CONST.EXTS.AUD.has(mediaExt)) {
               html += htmlHref ?

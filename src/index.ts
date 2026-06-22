@@ -1,6 +1,5 @@
 import type { MarkedExtension } from 'marked';
 import { merge } from 'lodash';
-import path from 'path';
 import * as wikirefs from 'wikirefs';
 
 import type { WikiRefsOptions } from './lib/types';
@@ -14,7 +13,7 @@ export default function wikirefsExtension(opts: Partial<WikiRefsOptions> = {}): 
   const defaults: WikiRefsOptions = {
     resolveHtmlText: (fname: string) => fname.replace(/-/g, ' '),
     resolveHtmlHref: (fname: string) => {
-      const extname: string = wikirefs.isMedia(fname) ? path.extname(fname) : '';
+      const extname: string = wikirefs.isMedia(fname) ? fname.slice(fname.lastIndexOf('.')) : '';
       fname = fname.replace(extname, '');
       return '/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + extname;
     },
