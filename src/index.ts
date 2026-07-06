@@ -15,7 +15,7 @@ export default function wikirefsExtension(opts: Partial<WikiRefsOptions> = {}): 
     resolveHtmlHref: (fname: string) => {
       const extname: string = wikirefs.isMedia(fname) ? fname.slice(fname.lastIndexOf('.')) : '';
       fname = fname.replace(extname, '');
-      return '/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + extname;
+      return '/' + wikirefs.slugify(fname) + extname;
     },
     resolveEmbedContent: (fname: string, _hText?: string | undefined) => Promise.resolve(fname + ' content'),
     baseUrl: '',

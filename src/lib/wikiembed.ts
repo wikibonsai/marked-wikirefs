@@ -46,7 +46,7 @@ export function wikiembeds(opts: any = {}): MarkedExtension {
           const cssNames: any = opts.cssNames || {};
           let htmlHref: string | undefined = opts.resolveHtmlHref ? opts.resolveHtmlHref(filename) : '/' + filename;
           if (htmlHref && hText) {
-            const headerSlug: string = hText.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            const headerSlug: string = wikirefs.slugify(hText);
             htmlHref = htmlHref + '#' + headerSlug;
           }
           const htmlText: string | undefined = (opts.resolveHtmlText && opts.resolveHtmlText(filename)) ? opts.resolveHtmlText(filename) : filename;
@@ -92,7 +92,7 @@ export function wikiembeds(opts: any = {}): MarkedExtension {
               cssClassArray.push(cssNames.wiki || 'wiki');
               cssClassArray.push(cssNames.embed || 'embed');
               if (doctype) {
-                const docTypeSlug: string = doctype.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+                const docTypeSlug: string = wikirefs.slugify(doctype);
                 cssClassArray.push((cssNames.doctype || 'doctype__') + docTypeSlug);
               }
               const css: string = cssClassArray.join(' ');

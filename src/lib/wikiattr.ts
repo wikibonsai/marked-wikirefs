@@ -42,7 +42,7 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
         // invalid
         if (htmlHref === undefined) {
           const wikitext = filename || 'error';
-          attrboxHtml += `<dd><a class="${cssNames.attr || 'attr'} ${cssNames.wiki || 'wiki'} ${cssNames.invalid || 'invalid'}">[[${wikitext}]]</a></dd>\n`;
+          attrboxHtml += `<dd><a class="${cssNames.attr || 'attr'} ${cssNames.wiki || 'wiki'} ${cssNames.invalid || 'invalid'}">${wikirefs.CONST.MARKER.OPEN}${wikitext}${wikirefs.CONST.MARKER.CLOSE}</a></dd>\n`;
 
         // valid
         } else {
@@ -52,11 +52,11 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
           }
           cssClassArray.push(cssNames.wiki || 'wiki');
           if (attrType) {
-            const attrTypeSlug = attrType.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+            const attrTypeSlug = wikirefs.slugify(attrType);
             cssClassArray.push((cssNames.reftype || 'reftype__') + attrTypeSlug);
           }
           if (doctype) {
-            const docTypeSlug = doctype.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+            const docTypeSlug = wikirefs.slugify(doctype);
             cssClassArray.push((cssNames.doctype || 'doctype__') + docTypeSlug);
           }
           const css: string = cssClassArray.join(' ');

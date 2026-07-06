@@ -38,7 +38,7 @@ export function wikilinks(opts: any = {}): MarkedExtension {
           const cssNames: any = opts.cssNames || {};
           let htmlHref: string | undefined = opts.resolveHtmlHref ? opts.resolveHtmlHref(filename) : '/' + filename;
           if (htmlHref && header && header.length > 0) {
-            const headerSlug: string = header.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+            const headerSlug: string = wikirefs.slugify(header);
             htmlHref = htmlHref + '#' + headerSlug;
           }
           const htmlText: string | undefined = opts.resolveHtmlText ? opts.resolveHtmlText(filename) : filename;
@@ -54,12 +54,12 @@ export function wikilinks(opts: any = {}): MarkedExtension {
             // linktype
             if (linktype) {
               cssClassArray.push(cssNames.type || 'type');
-              const linkTypeSlug: string = linktype.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+              const linkTypeSlug: string = wikirefs.slugify(linktype);
               cssClassArray.push((cssNames.reftype || 'reftype__') + linkTypeSlug);
             }
             // doctype
             if (doctype) {
-              const docTypeSlug: string = doctype.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+              const docTypeSlug: string = wikirefs.slugify(doctype);
               cssClassArray.push((cssNames.doctype || 'doctype__') + docTypeSlug);
             }
             const css: string = cssClassArray.join(' ');
