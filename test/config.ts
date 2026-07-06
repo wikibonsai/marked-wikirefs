@@ -1,20 +1,3 @@
-import type { TestFileData } from 'wikirefs-spec';
-import { fileDataMap } from 'wikirefs-spec';
-
-import type { WikiRefsOptions } from '../src/lib/types';
-
-// mockOpts
-
-export function makeMockOptsForRenderOnly(): Partial<WikiRefsOptions> {
-  return {
-    // all
-    resolveHtmlText: (filename: string): (string | undefined) => {
-      const fileItem: TestFileData | undefined = fileDataMap.find((fileData: TestFileData) => fileData.filename === filename);
-      return fileItem?.title?.toLowerCase();
-    },
-    resolveHtmlHref: (filename: string): (string | undefined) => {
-      const fileItem: TestFileData | undefined = fileDataMap.find((fileData: TestFileData) => fileData.filename === filename);
-      return fileItem?.href;
-    },
-  };
-}
+// mockOpts — the render-only resolvers live in wikirefs-spec now (were duplicated
+// per-parser). Re-exported so existing test imports (from './config') keep working.
+export { makeMockOptsForRenderOnly } from 'wikirefs-spec';
