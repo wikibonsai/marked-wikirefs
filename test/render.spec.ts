@@ -6,8 +6,8 @@ import * as wikirefs from 'wikirefs';
 import type { WikiRefTestCase, TestFileData } from 'wikirefs-spec';
 import { wikiRefCases, fileDataMap, makeMockOptsForRenderOnly } from 'wikirefs-spec';
 
-import type { WikiRefsOptions } from '../../src/lib/types';
-import wikirefsExtension from '../../src';
+import type { WikiRefsOptions } from '../src/lib/types';
+import wikirefsExtension from '../src';
 
 
 // setup
