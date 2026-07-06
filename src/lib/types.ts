@@ -25,7 +25,6 @@ export interface WikiRefsOptions {
     // attr
     attrbox?: string;
     attrItem?: string;
-    attrboxTitle?: string;
     // embed
     embedWrapper?: string;
     embedTitle?: string;
@@ -35,7 +34,6 @@ export interface WikiRefsOptions {
     linkIcon?: string;
     embedMedia?: string;
     embedAudio?: string;
-    embedDoc?: string;
     embedImage?: string;
     embedVideo?: string;
   };

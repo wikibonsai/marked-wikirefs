@@ -33,7 +33,6 @@ export default function wikirefsExtension(opts: Partial<WikiRefsOptions> = {}): 
       // attr
       attrbox: 'attrbox',
       attrItem: 'attr-item',
-      attrboxTitle: 'attrbox-title',
       // embed
       embedWrapper: 'embed-wrapper',
       embedTitle: 'embed-title',
@@ -43,7 +42,6 @@ export default function wikirefsExtension(opts: Partial<WikiRefsOptions> = {}): 
       linkIcon: 'link-icon',
       embedMedia: 'embed-media',
       embedAudio: 'embed-audio',
-      embedDoc: 'embed-doc',
       embedImage: 'embed-image',
       embedVideo: 'embed-video',
     },
