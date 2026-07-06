@@ -24,6 +24,7 @@ export interface WikiRefsOptions {
     doctype?: string;
     // attr
     attrbox?: string;
+    attrItem?: string;
     attrboxTitle?: string;
     // embed
     embedWrapper?: string;

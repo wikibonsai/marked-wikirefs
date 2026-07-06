@@ -32,7 +32,7 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
 
     // Render each attribute type and its values
     for (const attrType in attributeCollection) {
-      attrboxHtml += '<div class="attr-item">\n';
+      attrboxHtml += '<div class="' + (cssNames.attrItem || 'attr-item') + '">\n';
       attrboxHtml += `<dt>${attrType}</dt>\n`;
 
       for (const filename of attributeCollection[attrType]) {
@@ -146,6 +146,11 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
         Object.keys(attributeCollection).forEach(key => {
           delete attributeCollection[key];
         });
+
+        // normalize CRLF -> LF so wikiattr detection (mkdn-list items + the '\n'
+        // splits below) works on files saved with Windows line endings. marked,
+        // unlike markdown-it, doesn't normalize line endings before this hook.
+        markdown = markdown.replace(/\r\n/g, '\n');
 
         // Find all wikiattrs
         const attrMatches = wikirefs.RGX.WIKI.ATTR(markdown);

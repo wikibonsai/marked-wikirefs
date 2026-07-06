@@ -1,5 +1,5 @@
 import type { MarkedExtension } from 'marked';
-import { merge } from 'lodash';
+import { defu } from 'defu';
 import * as wikirefs from 'wikirefs';
 
 import type { WikiRefsOptions } from './lib/types';
@@ -32,6 +32,7 @@ export default function wikirefsExtension(opts: Partial<WikiRefsOptions> = {}): 
       doctype: 'doctype__',
       // attr
       attrbox: 'attrbox',
+      attrItem: 'attr-item',
       attrboxTitle: 'attrbox-title',
       // embed
       embedWrapper: 'embed-wrapper',
@@ -60,7 +61,10 @@ export default function wikirefsExtension(opts: Partial<WikiRefsOptions> = {}): 
       errorContent: 'Error: Content not found for ',
     }
   };
-  const fullOpts: WikiRefsOptions = merge({}, defaults, opts);
+  // defu(source, ...defaults): source (user opts) wins, defaults fill gaps —
+  // same precedence as the old merge({}, defaults, opts), but non-mutating and
+  // with an explicit __proto__/constructor guard (drops the lodash dep).
+  const fullOpts: WikiRefsOptions = defu(opts, defaults) as WikiRefsOptions;
   // merge extensions
   const extension: MarkedExtension = {
     extensions: [],
