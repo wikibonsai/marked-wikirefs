@@ -195,6 +195,28 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
       },
 
       postprocess(html) {
+        // enrich seam: resolve any INERT wiki markers left by a co-registered
+        // marked-caml attrbox (caml owns the box + attr classes; wikirefs owns
+        // resolution). caml emits: <a class="attr wiki reftype__<key>"
+        // data-wikiref="<target>">[[target]]</a>. See caml-wikiref-enrich-seam.
+        html = html.replace(
+          /<a class="([^"]*)" data-wikiref="([^"]*)">\[\[[^\]]*\]\]<\/a>/g,
+          (_m: string, classes: string, target: string): string => {
+            const href: string | undefined = opts.resolveHtmlHref(target);
+            if (href === undefined) {
+              // zombie -> invalid, keep the [[brackets]]
+              return `<a class="${classes} ${opts.cssNames?.invalid || 'invalid'}">${wikirefs.CONST.MARKER.OPEN}${target}${wikirefs.CONST.MARKER.CLOSE}</a>`;
+            }
+            const text: string = opts.resolveHtmlText(target) || target;
+            const doctype: string | undefined = opts.resolveDocType ? opts.resolveDocType(target) : '';
+            let css: string = classes;
+            if (doctype) {
+              css += ` ${opts.cssNames?.doctype || 'doctype__'}${wikirefs.slugify(doctype)}`;
+            }
+            const url: string = (opts.baseUrl || '') + href;
+            return `<a class="${css}" href="${url}" data-href="${url}">${text}</a>`;
+          }
+        );
         // Render attribute box
         const attrboxHtml: string = renderAttributeBox();
         const hasAttrbox: boolean = html.includes(`class="${opts.cssNames?.attrbox || 'attrbox'}"`);
