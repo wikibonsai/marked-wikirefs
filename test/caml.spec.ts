@@ -1,7 +1,7 @@
 // note: see marked-caml for caml + wikiref interop tests.
 //
 // hand-off (caml-wikiref-handoff): marked-caml renders wiki attr values as plain string
-// spans (<span class="attr wiki <keyslug>">[[target]]</span>); marked-wikirefs upgrades
+// spans (<span class="attr string <keyslug>">[[target]]</span>); marked-wikirefs upgrades
 // them to resolved links in its wikiattr postprocess. Here we unit-test that upgrade
 // directly (feeding markdown would let wikirefs' inline [[...]] tokenizer eat the
 // brackets before postprocess).
@@ -25,7 +25,7 @@ describe('marked-wikirefs: resolve caml wiki string spans', () => {
   const post = (html: string): string => (wikiattrs(opts) as any).hooks.postprocess(html);
 
   it('upgrades a valid wiki string span to a link (reftype from keyslug)', () => {
-    const out: string = post('<span class="attr wiki ref">[[real-note]]</span>');
+    const out: string = post('<span class="attr string ref">[[real-note]]</span>');
     assert.ok(out.includes('<a '), 'upgraded to an anchor');
     assert.ok(out.includes('href="/real-note"'), 'resolved href');
     assert.ok(out.includes('data-href="/real-note"'), 'resolved data-href');
@@ -34,7 +34,7 @@ describe('marked-wikirefs: resolve caml wiki string spans', () => {
   });
 
   it('marks a zombie wiki string span invalid, keeping [[brackets]]', () => {
-    const out: string = post('<span class="attr wiki ref">[[zombie-x]]</span>');
+    const out: string = post('<span class="attr string ref">[[zombie-x]]</span>');
     assert.ok(out.includes('invalid'), 'invalid class added');
     assert.ok(out.includes('[[zombie-x]]'), 'brackets kept for zombie');
     assert.ok(!/href=/.test(out), 'no href for zombie');

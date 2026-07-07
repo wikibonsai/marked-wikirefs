@@ -196,14 +196,16 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
 
       postprocess(html) {
         // enrich hand-off: a co-registered marked-caml renders wiki attr values as plain
-        // string spans — <span class="attr wiki <keyslug>">[[target]]</span>. wikirefs
-        // owns resolution, so upgrade each to a resolved <a> (valid) or invalid <a>
-        // (zombie), deriving the reftype from the span's keyslug. See caml-wikiref-handoff.
+        // string spans — <span class="attr string <keyslug>">[[target]]</span> (the
+        // literal [[...]] text is the only wiki signal; a genuine string value is never
+        // exactly [[x]] since caml-mkdn resolves those as wiki). wikirefs owns resolution,
+        // so upgrade each to a resolved <a> (valid) or invalid <a> (zombie), deriving the
+        // reftype from the span's keyslug. See caml-wikiref-handoff.
         const attr: string = opts.cssNames?.attr || 'attr';
         const wiki: string = opts.cssNames?.wiki || 'wiki';
         const reftype: string = opts.cssNames?.reftype || 'reftype__';
         html = html.replace(
-          new RegExp('<span class="' + attr + ' ' + wiki + ' ([^"]+)">\\[\\[([^\\]]+)\\]\\]</span>', 'g'),
+          new RegExp('<span class="' + attr + ' string ([^"]+)">\\[\\[([^\\]]+)\\]\\]</span>', 'g'),
           (_m: string, keyslug: string, target: string): string => {
             const href: string | undefined = opts.resolveHtmlHref(target);
             if (href === undefined) {
