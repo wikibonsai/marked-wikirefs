@@ -195,21 +195,24 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
       },
 
       postprocess(html) {
-        // enrich hand-off: resolve any unresolved wiki markers left by a co-registered
-        // marked-caml attrbox (caml owns the box + attr classes; wikirefs owns
-        // resolution). caml emits: <a class="attr wiki reftype__<key>"
-        // data-wikiref="<target>">[[target]]</a>. See caml-wikiref-handoff.
+        // enrich hand-off: a co-registered marked-caml renders wiki attr values as plain
+        // string spans — <span class="attr wiki <keyslug>">[[target]]</span>. wikirefs
+        // owns resolution, so upgrade each to a resolved <a> (valid) or invalid <a>
+        // (zombie), deriving the reftype from the span's keyslug. See caml-wikiref-handoff.
+        const attr: string = opts.cssNames?.attr || 'attr';
+        const wiki: string = opts.cssNames?.wiki || 'wiki';
+        const reftype: string = opts.cssNames?.reftype || 'reftype__';
         html = html.replace(
-          /<a class="([^"]*)" data-wikiref="([^"]*)">\[\[[^\]]*\]\]<\/a>/g,
-          (_m: string, classes: string, target: string): string => {
+          new RegExp('<span class="' + attr + ' ' + wiki + ' ([^"]+)">\\[\\[([^\\]]+)\\]\\]</span>', 'g'),
+          (_m: string, keyslug: string, target: string): string => {
             const href: string | undefined = opts.resolveHtmlHref(target);
             if (href === undefined) {
               // zombie -> invalid, keep the [[brackets]]
-              return `<a class="${classes} ${opts.cssNames?.invalid || 'invalid'}">${wikirefs.CONST.MARKER.OPEN}${target}${wikirefs.CONST.MARKER.CLOSE}</a>`;
+              return `<a class="${attr} ${wiki} ${opts.cssNames?.invalid || 'invalid'}">${wikirefs.CONST.MARKER.OPEN}${target}${wikirefs.CONST.MARKER.CLOSE}</a>`;
             }
             const text: string = opts.resolveHtmlText(target) || target;
             const doctype: string | undefined = opts.resolveDocType ? opts.resolveDocType(target) : '';
-            let css: string = classes;
+            let css: string = `${attr} ${wiki} ${reftype}${keyslug}`;
             if (doctype) {
               css += ` ${opts.cssNames?.doctype || 'doctype__'}${wikirefs.slugify(doctype)}`;
             }
