@@ -195,10 +195,10 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
       },
 
       postprocess(html) {
-        // enrich seam: resolve any INERT wiki markers left by a co-registered
+        // enrich hand-off: resolve any unresolved wiki markers left by a co-registered
         // marked-caml attrbox (caml owns the box + attr classes; wikirefs owns
         // resolution). caml emits: <a class="attr wiki reftype__<key>"
-        // data-wikiref="<target>">[[target]]</a>. See caml-wikiref-enrich-seam.
+        // data-wikiref="<target>">[[target]]</a>. See caml-wikiref-handoff.
         html = html.replace(
           /<a class="([^"]*)" data-wikiref="([^"]*)">\[\[[^\]]*\]\]<\/a>/g,
           (_m: string, classes: string, target: string): string => {
