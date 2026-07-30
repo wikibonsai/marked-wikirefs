@@ -177,7 +177,6 @@ export function applyExpectedOverrides(): void {
             '</li>\n' +
             '</ol>\n' +
             '</section>\n' +
-            '\n' +
             '</div>\n' +
             '</article>\n';
         }
@@ -205,7 +204,6 @@ export function applyExpectedOverrides(): void {
             '</li>\n' +
             '</ol>\n' +
             '</section>\n' +
-            '\n' +
             '</div>\n' +
             '</article>\n';
         }

@@ -78,7 +78,9 @@ export function wikiembeds(opts: any = {}): MarkedExtension {
     html += `<i class="${cn('linkIcon', 'link-icon')}"></i>\n</a>\n</div>\n`;
     // content (filled in postprocess)
     html += `<div class="${cn('embedContent', 'embed-content')}">\n`;
-    html += `<div id="${placeholderId}" class="embed-placeholder" data-filename="${filename}"${hText !== undefined ? ` data-header="${hText}"` : ''}>Loading content for '${filename}'...</div>\n`;
+    // no trailing \n after the placeholder — postprocess fills it with content normalized to
+    // exactly one trailing \n, so </div> sits on its own line with no spurious blank.
+    html += `<div id="${placeholderId}" class="embed-placeholder" data-filename="${filename}"${hText !== undefined ? ` data-header="${hText}"` : ''}>Loading content for '${filename}'...</div>`;
     html += '</div>\n';
     html += '</article>\n';
     embedPlaceholders.set(placeholderId, { filename, hText });
@@ -164,9 +166,10 @@ export function wikiembeds(opts: any = {}): MarkedExtension {
           }
           try {
             const embedContent: string | undefined = await opts.resolveEmbedContent(filename, hText);
-            processedHtml = processedHtml.replace(placeholderRegex, () => (embedContent ? embedContent : errorString));
+            const filled: string = (embedContent ? embedContent : errorString).replace(/\n+$/, '') + '\n';
+            processedHtml = processedHtml.replace(placeholderRegex, () => filled);
           } catch (error) {
-            processedHtml = processedHtml.replace(placeholderRegex, () => errorString);
+            processedHtml = processedHtml.replace(placeholderRegex, () => errorString.replace(/\n+$/, '') + '\n');
           }
         }
         return processedHtml;
