@@ -156,8 +156,7 @@ export function applyExpectedOverrides(): void {
         // wikiembed; full-doc with footnote
         if (testcase.descr === 'wikiembed; w/ other mkdn constructs; gfm; footnote') {
           testcase.html =
-            '<p><p>\n' +
-            '<div class="embed-wrapper">\n' +
+            '<article class="embed-wrapper">\n' +
             '<div class="embed-title">\n' +
             '<a class="wiki embed" href="/tests/fixtures/embed-doc-mkdn-footnote" data-href="/tests/fixtures/embed-doc-mkdn-footnote">\n' +
             'embed doc mkdn footnote\n' +
@@ -180,15 +179,12 @@ export function applyExpectedOverrides(): void {
             '</section>\n' +
             '\n' +
             '</div>\n' +
-            '</div>\n' +
-            '</p>\n' +
-            '</p>\n';
+            '</article>\n';
         }
         // wikiembed; header section with footnote
         if (testcase.descr === 'wikiembed; w/ other mkdn constructs; header; gfm; section w/ footnote') {
           testcase.html =
-            '<p><p>\n' +
-            '<div class="embed-wrapper">\n' +
+            '<article class="embed-wrapper">\n' +
             '<div class="embed-title">\n' +
             '<a class="wiki embed" href="/tests/fixtures/embed-doc-header-mkdn#footnote" data-href="/tests/fixtures/embed-doc-header-mkdn#footnote">\n' +
             'embed doc header constructs\n' +
@@ -211,9 +207,7 @@ export function applyExpectedOverrides(): void {
             '</section>\n' +
             '\n' +
             '</div>\n' +
-            '</div>\n' +
-            '</p>\n' +
-            '</p>\n';
+            '</article>\n';
         }
       }
     }

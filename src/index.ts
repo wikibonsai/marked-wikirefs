@@ -105,6 +105,8 @@ export default function wikirefsExtension(opts: Partial<WikiRefsOptions> = {}): 
       if (embedsExt.hooks.preprocess) preprocessHooks.push(embedsExt.hooks.preprocess);
       if (embedsExt.hooks.postprocess) postprocessHooks.push(embedsExt.hooks.postprocess);
     }
+    // Add renderer overrides (e.g. wikiembeds' paragraph hoist)
+    if (embedsExt.renderer) { extension.renderer = { ...(extension.renderer || {}), ...embedsExt.renderer }; }
   }
   extension.hooks = {
     async preprocess(markdown: string): Promise<string> {
