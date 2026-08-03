@@ -154,7 +154,7 @@ export function applyExpectedOverrides(): void {
           testcase.html = '<p>[^fn]\n[^fn]: <a class="wiki link type reftype__attrtype" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a></p>\n';
         }
         // wikiembed; full-doc with footnote
-        if (testcase.descr === 'wikiembed; w/ other mkdn constructs; gfm; footnote') {
+        if (testcase.descr === 'wikiembed; mkdn; w/ other mkdn constructs; gfm; footnote') {
           testcase.html =
             '<article class="embed-wrapper">\n' +
             '<div class="embed-title">\n' +
@@ -181,7 +181,7 @@ export function applyExpectedOverrides(): void {
             '</article>\n';
         }
         // wikiembed; header section with footnote
-        if (testcase.descr === 'wikiembed; w/ other mkdn constructs; header; gfm; section w/ footnote') {
+        if (testcase.descr === 'wikiembed; mkdn; w/ other mkdn constructs; header; gfm; section w/ footnote') {
           testcase.html =
             '<article class="embed-wrapper">\n' +
             '<div class="embed-title">\n' +
