@@ -1160,11 +1160,6 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.11.tgz#d421b6c527a3037f7c84433fd2c4229e016863d3"
   integrity sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==
 
-"@types/lodash@^4.14.182":
-  version "4.14.182"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.182.tgz#05301a4d5e62963227eaafe0ce04dd77c54ea5c2"
-  integrity sha512-/THyiqyQAP9AfARo4pF+aCGcyiQ94tX/Is2I7HofNRqoYLgN1PBoOWu2/zTA5zMxzP5EFutMtWtGAFRKUe961Q==
-
 "@types/minimist@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.2.tgz#ee771e2ba4b3dc5b372935d549fd9617bf345b8c"
@@ -1747,6 +1742,11 @@ default-require-extensions@^3.0.0:
   integrity sha512-eXTJmRbm2TIt9MgWTsOH1wEuhew6XGZcMeGKCtLedIg/NCsg1iBePXkceTdK4Fii7pzmN9tGsZhKzZ4h7O/fxw==
   dependencies:
     strip-bom "^4.0.0"
+
+defu@^6.1.7:
+  version "6.1.7"
+  resolved "https://registry.yarnpkg.com/defu/-/defu-6.1.7.tgz#72543567c8e9f97ff13ce402b6dbe09ac5ae4d23"
+  integrity sha512-7z22QmUWiQ/2d0KkdYmANbRUVABpZ9SNYyH5vx6PZ+nE5bcC0l7uFvEfHlyld/HcGBFTL536ClDt3DEcSlEJAQ==
 
 del-cli@^5.0.0:
   version "5.0.0"
@@ -2571,11 +2571,6 @@ lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
-
-lodash@^4.17.21:
-  version "4.17.21"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
-  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 log-symbols@4.1.0:
   version "4.1.0"
@@ -3538,15 +3533,15 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
-wikirefs-spec@^0.0.5-spec:
-  version "0.0.5-spec"
-  resolved "https://registry.yarnpkg.com/wikirefs-spec/-/wikirefs-spec-0.0.5-spec.tgz#6d291c9746440f88cc360d4771fa511c3270828e"
-  integrity sha512-POaCb18YFRfXEYLM5OkPogv1/T0/r/doGZHpVxyorWME11HBFxosXH/yUIT4Jm9Npdvubw+du1j7St46pWFDEA==
+wikirefs-spec@^0.0.8-spec:
+  version "0.0.8-spec"
+  resolved "https://registry.yarnpkg.com/wikirefs-spec/-/wikirefs-spec-0.0.8-spec.tgz#049a782a489fd8d9b16afa748b6c90a6a3279053"
+  integrity sha512-3fLrm0UF8s7R7Fz38ZVUx1yVx57HA/qcXFprW2D9VcSod7qvjGq4mdPiDG6nhBVhJqaESa39tB0k6YzD4ao6dA==
 
-wikirefs@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/wikirefs/-/wikirefs-0.0.8.tgz#1b8738d13334390d346badbe0f0c6c938d29e93e"
-  integrity sha512-vGqW+klNCWBbrXa4oKXdJKvRf40VpBr6u49FVpHCO/KFfpCBfua9j/mn0PyuPT0KYbqrBKJzMCOqT2+eeq2v6A==
+wikirefs@^0.0.12:
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/wikirefs/-/wikirefs-0.0.12.tgz#00d9cb918bb46c2f4b97f84b420812589bfd279a"
+  integrity sha512-duHXN5iw9w7ao2a1SyRMBExtI5Sh2UF8GfASJ6FzlqcBqm5kSY8Z740nvrTGiPav9OxUDCaFdYfAlxBjnCU78w==
   dependencies:
     escape-mkdn "^0.0.3"
 
