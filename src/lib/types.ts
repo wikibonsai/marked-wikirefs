@@ -6,8 +6,8 @@ export interface WikiRefsOptions {
   resolveEmbedContent?: (fname: string, hText?: string | undefined) => Promise<string | undefined>;
   // metadata functions
   addAttr?: (attrType: string, fname: string) => void;
-  addLink?: (linkType: string, fname: string) => void;
-  addEmbed?: (fname: string) => void;
+  addLink?: (linkType: string, fname: string, header?: string) => void;
+  addEmbed?: (fname: string, header?: string) => void;
   // render opts
   prepFile?: boolean;
   baseUrl?: string;

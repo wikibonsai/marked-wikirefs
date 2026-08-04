@@ -75,7 +75,7 @@ export function wikilinks(opts: any = {}): MarkedExtension {
             const html: string = `<a class="${css}" href="${opts.baseUrl || ''}${htmlHref}" data-href="${opts.baseUrl || ''}${htmlHref}">${displayText}</a>`;
             // add metadata
             if (opts.addLink) {
-              opts.addLink(linktype || '', filename);
+              opts.addLink(linktype || '', filename, header);
             }
             return html;
           }

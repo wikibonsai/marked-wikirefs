@@ -26,7 +26,7 @@ export function wikiembeds(opts: any = {}): MarkedExtension {
     const doctype: string | undefined = opts.resolveDocType ? opts.resolveDocType(filename) : '';
     const baseUrl: string = opts.baseUrl || '';
     // metadata
-    if (opts.addEmbed) { opts.addEmbed(filename); }
+    if (opts.addEmbed) { opts.addEmbed(filename, hText); }
 
     // media embed -> <figure class="embed-media"> (+ optional <figcaption> from |label)
     if (wikirefs.isMedia(filename)) {
