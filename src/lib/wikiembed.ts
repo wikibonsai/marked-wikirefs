@@ -15,7 +15,6 @@ export function wikiembeds(opts: any = {}): MarkedExtension {
   // track note-embed content placeholders to fill in postprocess (async content resolution)
   const embedPlaceholders: Map<string, EmbedPlaceholder> = new Map();
   const cssNames: any = opts.cssNames || {};
-  const cn = (key: string, dflt: string): string => cssNames[key] || dflt;
 
   // build the block HTML for a single embed (note -> <article>; media -> <figure>). the
   // <article>/<figure> is BLOCK content and cannot live inside a <p>, so an embed is detected
@@ -38,46 +37,46 @@ export function wikiembeds(opts: any = {}): MarkedExtension {
       let media: string;
       if (mediaExt === wikirefs.CONST.EXTS.PDF) {
         const data: string = htmlHref ? `${baseUrl}${htmlHref}` : '';
-        media = `<object class="${cn('embedPdf', 'embed-pdf')}" data="${data}" type="application/pdf">\n`
+        media = `<object class="${cssNames.embedPDF || 'embed-pdf'}" data="${data}" type="application/pdf">\n`
               + `<a href="${data}">${filenameSlug}</a>\n`
               + `</object>`;
       } else if (wikirefs.CONST.EXTS.AUD.has(mediaExt)) {
-        media = `<audio class="${cn('embedAudio', 'embed-audio')}" controls type="audio/${mime}"${src}></audio>`;
+        media = `<audio class="${cssNames.embedAudio || 'embed-audio'}" controls type="audio/${mime}"${src}></audio>`;
       } else if (wikirefs.CONST.EXTS.IMG.has(mediaExt)) {
-        media = `<img class="${cn('embedImage', 'embed-image')}"${src} alt="${filenameSlug}">`;
+        media = `<img class="${cssNames.embedImage || 'embed-image'}"${src} alt="${filenameSlug}">`;
       } else if (wikirefs.CONST.EXTS.VID.has(mediaExt)) {
-        media = `<video class="${cn('embedVideo', 'embed-video')}" controls type="video/${mime}"${src}></video>`;
+        media = `<video class="${cssNames.embedVideo || 'embed-video'}" controls type="video/${mime}"${src}></video>`;
       } else {
         media = 'media error';
       }
       const caption: string = (label !== undefined && label.length > 0) ? `<figcaption>${label}</figcaption>\n` : '';
-      return `<figure class="${cn('embedMedia', 'embed-media')}" src="${filenameSlug}" alt="${filenameSlug}">\n`
+      return `<figure class="${cssNames.embedMedia || 'embed-media'}" src="${filenameSlug}" alt="${filenameSlug}">\n`
            + `${media}\n${caption}</figure>\n`;
     }
 
     // note (markdown) embed -> <article class="embed-wrapper">
     const placeholderId: string = `embed-${Math.random().toString(36).substring(2, 15)}`;
-    let html: string = `<article class="${cn('embedWrapper', 'embed-wrapper')}">\n`;
+    let html: string = `<article class="${cssNames.embedWrapper || 'embed-wrapper'}">\n`;
     // title
-    html += `<div class="${cn('embedTitle', 'embed-title')}">\n`;
+    html += `<div class="${cssNames.embedTitle || 'embed-title'}">\n`;
     if (htmlHref) {
-      const css: string[] = [ cn('wiki', 'wiki'), cn('embed', 'embed') ];
-      if (doctype) { css.push(cn('doctype', 'doctype__') + wikirefs.slugify(doctype)); }
+      const css: string[] = [ cssNames.wiki || 'wiki', cssNames.embed || 'embed' ];
+      if (doctype) { css.push((cssNames.doctype || 'doctype__') + wikirefs.slugify(doctype)); }
       html += `<a class="${css.join(' ')}" href="${baseUrl}${htmlHref}" data-href="${baseUrl}${htmlHref}">\n${htmlText}\n</a>\n`;
     } else {
-      html += `<a class="${cn('wiki', 'wiki')} ${cn('embed', 'embed')} ${cn('invalid', 'invalid')}">\n${htmlText}\n</a>\n`;
+      html += `<a class="${cssNames.wiki || 'wiki'} ${cssNames.embed || 'embed'} ${cssNames.invalid || 'invalid'}">\n${htmlText}\n</a>\n`;
     }
     html += '</div>\n';
     // link
-    html += `<div class="${cn('embedLink', 'embed-link')}">\n`;
+    html += `<div class="${cssNames.embedLink || 'embed-link'}">\n`;
     if (htmlHref) {
-      html += `<a class="${cn('embedLinkIcon', 'embed-link-icon')}" href="${baseUrl}${htmlHref}" data-href="${baseUrl}${htmlHref}">\n`;
+      html += `<a class="${cssNames.embedLinkIcon || 'embed-link-icon'}" href="${baseUrl}${htmlHref}" data-href="${baseUrl}${htmlHref}">\n`;
     } else {
-      html += `<a class="${cn('embedLinkIcon', 'embed-link-icon')} ${cn('invalid', 'invalid')}">\n`;
+      html += `<a class="${cssNames.embedLinkIcon || 'embed-link-icon'} ${cssNames.invalid || 'invalid'}">\n`;
     }
-    html += `<i class="${cn('linkIcon', 'link-icon')}"></i>\n</a>\n</div>\n`;
+    html += `<i class="${cssNames.linkIcon || 'link-icon'}"></i>\n</a>\n</div>\n`;
     // content (filled in postprocess)
-    html += `<div class="${cn('embedContent', 'embed-content')}">\n`;
+    html += `<div class="${cssNames.embedContent || 'embed-content'}">\n`;
     // no trailing \n after the placeholder — postprocess fills it with content normalized to
     // exactly one trailing \n, so </div> sits on its own line with no spurious blank.
     html += `<div id="${placeholderId}" class="embed-placeholder" data-filename="${filename}"${hText !== undefined ? ` data-header="${hText}"` : ''}>Loading content for '${filename}'...</div>`;

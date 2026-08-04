@@ -43,6 +43,7 @@ export default function wikirefsExtension(opts: Partial<WikiRefsOptions> = {}): 
       embedMedia: 'embed-media',
       embedAudio: 'embed-audio',
       embedImage: 'embed-image',
+      embedPDF: 'embed-pdf',
       embedVideo: 'embed-video',
     },
     attrs: {

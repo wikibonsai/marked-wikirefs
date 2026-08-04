@@ -35,6 +35,7 @@ export interface WikiRefsOptions {
     embedMedia?: string;
     embedAudio?: string;
     embedImage?: string;
+    embedPDF?: string;
     embedVideo?: string;
   };
   attrs?: {
