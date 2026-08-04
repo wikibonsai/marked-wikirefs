@@ -156,10 +156,6 @@ Classname for document type. Default is `doctype__` and combined with the slugif
 
 Classname for the wikiattr attrbox. Default is `attrbox`.
 
-#### `cssNames.attrboxTitle`
-
-Classname for the wikiattr attrbox title. Default is `attrbox-title`.
-
 ### `links`
 
 These are wikilinks-specific options.
