@@ -12,7 +12,6 @@ import { buildMd } from './setup';
 
 interface MetaCase {
   descr: string;
-  reason?: string;                             // assert message — surfaced on mismatch
   hook: 'addAttr' | 'addLink' | 'addEmbed';    // metadata option function under test
   mkdn: string;                                // markdown input
   calls: unknown[][];                          // expected captured call arg-tuples
@@ -24,7 +23,7 @@ function run(tests: MetaCase[]): void {
       const calls: unknown[][] = [];
       const capture = (...args: unknown[]): void => { calls.push(args); };
       await buildMd({ [test.hook]: capture } as Partial<WikiRefsOptions>)(test.mkdn);
-      assert.deepStrictEqual(calls, test.calls, test.reason);
+      assert.deepStrictEqual(calls, test.calls);
     });
   }
 }
@@ -40,14 +39,12 @@ describe('config; metadata', () => {
     },
     {
       descr: 'addLink',
-      reason: 'typed link so a non-empty linktype is passed through',
       hook: 'addLink',
       mkdn: ':linktype1::[[fname-a]].',
       calls: [['linktype1', 'fname-a', undefined]],
     },
     {
       descr: 'addLink; w/ header',
-      reason: 'raw (unslugified) header in the trailing slot',
       hook: 'addLink',
       mkdn: ':linktype1::[[fname-a#header-text]].',
       calls: [['linktype1', 'fname-a', 'header-text']],
@@ -60,7 +57,6 @@ describe('config; metadata', () => {
     },
     {
       descr: 'addEmbed; w/ header',
-      reason: 'raw (unslugified) header in the trailing slot',
       hook: 'addEmbed',
       mkdn: '![[fname-a#header-text]]\n',
       calls: [['fname-a', 'header-text']],

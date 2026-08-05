@@ -9,7 +9,7 @@ describe('config; misc', () => {
   // body during preprocess) but no attrbox is emitted, so the whole document is empty.
   it('attrbox render disabled', async () => {
     const actlHtml: string = await buildMd({ attrs: { enable: true, render: false } })(':attrtype::[[fname-a]]\n');
-    assert.strictEqual(actlHtml, '', 'attr line consumed but render:false suppresses the attrbox, so the doc is empty');
+    assert.strictEqual(actlHtml, '');
   });
 
   // custom errorContent surfaces when the resolver yields nothing for the embed.
@@ -33,8 +33,7 @@ describe('config; misc', () => {
       + '<div class="embed-content">\n'
       + 'Custom Error Content\'fname-a\'\n'
       + '</div>\n'
-      + '</article>\n',
-      'emitted when resolveEmbedContent returns undefined');
+      + '</article>\n');
   });
 
 });

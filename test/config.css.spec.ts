@@ -13,7 +13,7 @@ describe('config; css class names', () => {
         const desc: string = `[${('00' + (++i)).slice(-3)}] ` + (test.descr || '');
         it(desc, async () => {
           const actlHtml: string = await buildMd(test.opts)(test.mkdn);
-          assert.strictEqual(actlHtml, test.html, test.reason);
+          assert.strictEqual(actlHtml, test.html);
         });
       }
     });
@@ -30,7 +30,6 @@ describe('config; css class names', () => {
   run('overrides', [
     {
       descr: 'wiki',
-      reason: 'replaces default wiki class',
       opts: { cssNames: { wiki: 'custom-wiki' } },
       mkdn: ':attrtype::[[fname-a]]\n',
       html: '<aside class="attrbox">\n'
@@ -44,7 +43,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'invalid',
-      reason: 'unresolved href renders via the invalid branch',
       opts: { cssNames: { invalid: 'custom-invalid' }, resolveHtmlHref: (): string | undefined => undefined },
       mkdn: ':attrtype::[[fname-a]]\n',
       html: '<aside class="attrbox">\n'
@@ -58,7 +56,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'attr',
-      reason: 'replaces default attr class',
       opts: { cssNames: { attr: 'custom-attr' } },
       mkdn: ':attrtype::[[fname-a]]\n',
       html: '<aside class="attrbox">\n'
@@ -72,21 +69,18 @@ describe('config; css class names', () => {
     },
     {
       descr: 'link',
-      reason: 'replaces default link class',
       opts: { cssNames: { link: 'custom-link' } },
       mkdn: '[[fname-a]]\n',
       html: '<p><a class="wiki custom-link" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a></p>\n',
     },
     {
       descr: 'type',
-      reason: 'only appears on a typed link',
       opts: { cssNames: { type: 'custom-type' } },
       mkdn: ':linktype1::[[fname-a]].',
       html: '<p><a class="wiki link custom-type reftype__linktype1" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a>.</p>\n',
     },
     {
       descr: 'embed',
-      reason: 'on the embed title anchor (wiki embed; no reftype)',
       opts: { cssNames: { embed: 'custom-embed' } },
       mkdn: '![[fname-a]]\n',
       html: '<article class="embed-wrapper">\n'
@@ -107,7 +101,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'reftype',
-      reason: 'replaces default reftype prefix',
       opts: { cssNames: { reftype: 'custom-reftype__' } },
       mkdn: ':attrtype::[[fname-a]]\n',
       html: '<aside class="attrbox">\n'
@@ -121,7 +114,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'doctype',
-      reason: 'a resolved doctype appends the doctype class',
       opts: { cssNames: { doctype: 'custom-doctype__' }, resolveDocType: (): string | undefined => 'note' },
       mkdn: ':attrtype::[[fname-a]]\n',
       html: '<aside class="attrbox">\n'
@@ -135,7 +127,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'attrbox',
-      reason: 'replaces default attrbox class',
       opts: { cssNames: { attrbox: 'custom-attrbox' } },
       mkdn: ':attrtype::[[fname-a]]\n',
       html: '<aside class="custom-attrbox">\n'
@@ -149,7 +140,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'attrItem',
-      reason: 'replaces default attr-item class',
       opts: { cssNames: { attrItem: 'custom-attr-item' } },
       mkdn: ':attrtype::[[fname-a]]\n',
       html: '<aside class="attrbox">\n'
@@ -163,7 +153,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'embedWrapper',
-      reason: 'replaces default embed-wrapper class',
       opts: { cssNames: { embedWrapper: 'custom-embed-wrapper' } },
       mkdn: '![[fname-a]]\n',
       html: '<article class="custom-embed-wrapper">\n'
@@ -184,7 +173,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'embedTitle',
-      reason: 'replaces default embed-title class',
       opts: { cssNames: { embedTitle: 'custom-embed-title' } },
       mkdn: '![[fname-a]]\n',
       html: '<article class="embed-wrapper">\n'
@@ -205,7 +193,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'embedLink',
-      reason: 'replaces default embed-link class',
       opts: { cssNames: { embedLink: 'custom-embed-link' } },
       mkdn: '![[fname-a]]\n',
       html: '<article class="embed-wrapper">\n'
@@ -226,7 +213,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'embedContent',
-      reason: 'replaces default embed-content class',
       opts: { cssNames: { embedContent: 'custom-embed-content' } },
       mkdn: '![[fname-a]]\n',
       html: '<article class="embed-wrapper">\n'
@@ -247,7 +233,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'embedLinkIcon',
-      reason: 'replaces default embed-link-icon class',
       opts: { cssNames: { embedLinkIcon: 'custom-embed-link-icon' } },
       mkdn: '![[fname-a]]\n',
       html: '<article class="embed-wrapper">\n'
@@ -268,7 +253,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'linkIcon',
-      reason: 'the <i> inside the note-embed link block',
       opts: { cssNames: { linkIcon: 'custom-link-icon' } },
       mkdn: '![[fname-a]]\n',
       html: '<article class="embed-wrapper">\n'
@@ -289,7 +273,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'embedMedia',
-      reason: 'on the media <figure> (image input)',
       opts: { cssNames: { embedMedia: 'custom-embed-media' } },
       mkdn: '![[image.png]]\n',
       html: '<figure class="custom-embed-media" src="image.png" alt="image.png">\n'
@@ -298,7 +281,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'embedAudio',
-      reason: 'on the <audio> element',
       opts: { cssNames: { embedAudio: 'custom-embed-audio' } },
       mkdn: '![[audio.mp3]]\n',
       html: '<figure class="embed-media" src="audio.mp3" alt="audio.mp3">\n'
@@ -307,7 +289,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'embedImage',
-      reason: 'on the <img> element',
       opts: { cssNames: { embedImage: 'custom-embed-image' } },
       mkdn: '![[image.png]]\n',
       html: '<figure class="embed-media" src="image.png" alt="image.png">\n'
@@ -316,7 +297,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'embedPDF',
-      reason: 'on the <object> element',
       opts: { cssNames: { embedPDF: 'custom-embed-pdf' } },
       mkdn: '![[pdf-doc.pdf]]\n',
       html: '<figure class="embed-media" src="pdf-doc.pdf" alt="pdf-doc.pdf">\n'
@@ -327,7 +307,6 @@ describe('config; css class names', () => {
     },
     {
       descr: 'embedVideo',
-      reason: 'on the <video> element',
       opts: { cssNames: { embedVideo: 'custom-embed-video' } },
       mkdn: '![[video.mp4]]\n',
       html: '<figure class="embed-media" src="video.mp4" alt="video.mp4">\n'

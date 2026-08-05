@@ -23,7 +23,7 @@ describe('config; construct toggling', () => {
         const desc: string = `[${('00' + (++i)).slice(-3)}] ` + (test.descr || '');
         it(desc, async () => {
           const actlHtml: string = await buildMd(test.opts)(test.mkdn);
-          assert.strictEqual(actlHtml, test.html, test.reason);
+          assert.strictEqual(actlHtml, test.html);
         });
       }
     });
@@ -34,7 +34,6 @@ describe('config; construct toggling', () => {
   run('wikiattrs only', [
     {
       descr: 'wikiattr; prefixed',
-      reason: 'renders the attr line as an attrbox aside',
       opts: wikiattrOnly,
       mkdn: ':attrtype::[[fname-a]]\n',
       html: '<aside class="attrbox">\n'
@@ -48,21 +47,18 @@ describe('config; construct toggling', () => {
     },
     {
       descr: 'wikilink; typed',
-      reason: 'links disabled, so the typed link stays inert text',
       opts: wikiattrOnly,
       mkdn: ':linktype::[[fname-a]].',
       html: '<p>:linktype::[[fname-a]].</p>\n',
     },
     {
       descr: 'wikilink; untyped',
-      reason: 'links disabled, so the untyped link stays inert text',
       opts: wikiattrOnly,
       mkdn: '[[fname-a]].',
       html: '<p>[[fname-a]].</p>\n',
     },
     {
       descr: 'wikiembed; mkdn',
-      reason: 'embeds disabled, so the embed stays inert text',
       opts: wikiattrOnly,
       mkdn: '![[fname-a]].',
       html: '<p>![[fname-a]].</p>\n',
@@ -75,28 +71,24 @@ describe('config; construct toggling', () => {
   run('wikilinks only', [
     {
       descr: 'wikiattr; prefixed',
-      reason: 'attrs disabled, so the attr line is re-read as a typed link',
       opts: wikilinkOnly,
       mkdn: ':attrtype::[[fname-a]]\n',
       html: '<p><a class="wiki link type reftype__attrtype" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a></p>\n',
     },
     {
       descr: 'wikilink; typed',
-      reason: 'renders a typed link',
       opts: wikilinkOnly,
       mkdn: ':linktype::[[fname-a]].',
       html: '<p><a class="wiki link type reftype__linktype" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a>.</p>\n',
     },
     {
       descr: 'wikilink; untyped',
-      reason: 'renders an untyped link',
       opts: wikilinkOnly,
       mkdn: '[[fname-a]].',
       html: '<p><a class="wiki link" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a>.</p>\n',
     },
     {
       descr: 'wikiembed; mkdn',
-      reason: 'embeds disabled, so the "!" stays literal and the wikilink renders after it',
       opts: wikilinkOnly,
       mkdn: '![[fname-a]].',
       html: '<p>!<a class="wiki link" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a>.</p>\n',
@@ -108,28 +100,24 @@ describe('config; construct toggling', () => {
   run('wikiembeds only', [
     {
       descr: 'wikiattr; prefixed',
-      reason: 'attrs disabled, so the attr line stays inert text',
       opts: wikiembedOnly,
       mkdn: ':attrtype::[[fname-a]]\n',
       html: '<p>:attrtype::[[fname-a]]</p>\n',
     },
     {
       descr: 'wikilink; typed',
-      reason: 'links disabled, so the typed link stays inert text',
       opts: wikiembedOnly,
       mkdn: ':linktype::[[fname-a]].',
       html: '<p>:linktype::[[fname-a]].</p>\n',
     },
     {
       descr: 'wikilink; untyped',
-      reason: 'links disabled, so the untyped link stays inert text',
       opts: wikiembedOnly,
       mkdn: '[[fname-a]].',
       html: '<p>[[fname-a]].</p>\n',
     },
     {
       descr: 'wikiembed; mkdn',
-      reason: 'renders a block article; the trailing "." is hoisted to a sibling <p>',
       opts: wikiembedOnly,
       mkdn: '![[fname-a]].',
       html: '<article class="embed-wrapper">\n'
