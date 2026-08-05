@@ -28,6 +28,7 @@ export default function wikirefsExtension(opts: Partial<WikiRefsOptions> = {}): 
       link: 'link',
       type: 'type',
       embed: 'embed',
+      // types
       reftype: 'reftype__',
       doctype: 'doctype__',
       // attr

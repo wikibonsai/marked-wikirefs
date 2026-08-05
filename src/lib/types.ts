@@ -20,6 +20,7 @@ export interface WikiRefsOptions {
     link?: string;
     type?: string;
     embed?: string;
+    // types
     reftype?: string;
     doctype?: string;
     // attr
