@@ -2,7 +2,8 @@ import { WikiRefsOptions } from '../src/util/types';
 
 
 export interface TestCase {
-  descr: string,               // test description
+  descr: string,               // test name — a terse tree-of-terms leaf (sits under the run() group)
+  reason?: string,             // assert message — why the test would fail (surfaced on mismatch)
   error?: boolean,             // test reflects an error state
   opts?: Partial<WikiRefsOptions>, // plugin options
   mkdn: string,                // markdown input
