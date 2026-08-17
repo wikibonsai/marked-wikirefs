@@ -29,7 +29,7 @@
   "dependencies": {
     "defu": "^6.1.7",
     "marked": "^15.0.4",
-    "wikirefs": "^0.0.12"
+    "wikirefs": "^0.0.13"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",

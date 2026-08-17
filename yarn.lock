@@ -3538,10 +3538,10 @@ wikirefs-spec@^0.0.8-spec:
   resolved "https://registry.yarnpkg.com/wikirefs-spec/-/wikirefs-spec-0.0.8-spec.tgz#049a782a489fd8d9b16afa748b6c90a6a3279053"
   integrity sha512-3fLrm0UF8s7R7Fz38ZVUx1yVx57HA/qcXFprW2D9VcSod7qvjGq4mdPiDG6nhBVhJqaESa39tB0k6YzD4ao6dA==
 
-wikirefs@^0.0.12:
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/wikirefs/-/wikirefs-0.0.12.tgz#00d9cb918bb46c2f4b97f84b420812589bfd279a"
-  integrity sha512-duHXN5iw9w7ao2a1SyRMBExtI5Sh2UF8GfASJ6FzlqcBqm5kSY8Z740nvrTGiPav9OxUDCaFdYfAlxBjnCU78w==
+wikirefs@^0.0.13:
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/wikirefs/-/wikirefs-0.0.13.tgz#89bd27030d5ac818ba2f9813619309ab96d937d5"
+  integrity sha512-OVq/kDD8yvX8xqWyjix0bpTMlJs12dglJ/K2aJ60o7YMo8+cCBvjzy5zRXEpY9uG5WFj2Jd24OiHmRfzvexgXA==
   dependencies:
     escape-mkdn "^0.0.3"
 

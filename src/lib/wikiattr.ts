@@ -33,7 +33,9 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
     // Render each attribute type and its values
     for (const attrType in attributeCollection) {
       attrboxHtml += '<div class="' + (cssNames.attrItem || 'attr-item') + '">\n';
-      attrboxHtml += `<dt>${attrType}</dt>\n`;
+      // the attrtype's class rides the dt (dt = relation color, dd > a = target
+      // color, mirroring the graph) -- see wikirefs-spec
+      attrboxHtml += `<dt class="${(cssNames.reftype || 'reftype__') + wikirefs.slugify(attrType)}">${attrType}</dt>\n`;
 
       for (const filename of attributeCollection[attrType]) {
         const htmlHref: string | undefined = opts.resolveHtmlHref(filename);
@@ -51,10 +53,8 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
             cssClassArray.push(cssNames.attr || 'attr');
           }
           cssClassArray.push(cssNames.wiki || 'wiki');
-          if (attrType) {
-            const attrTypeSlug = wikirefs.slugify(attrType);
-            cssClassArray.push((cssNames.reftype || 'reftype__') + attrTypeSlug);
-          }
+          // NO reftype__ here: the attrtype's class lives on the <dt> above --
+          // attr anchors carry structure + doctype only
           if (doctype) {
             const docTypeSlug = wikirefs.slugify(doctype);
             cssClassArray.push((cssNames.doctype || 'doctype__') + docTypeSlug);
@@ -196,17 +196,17 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
 
       postprocess(html) {
         // enrich hand-off: a co-registered marked-caml renders wiki attr values as plain
-        // string spans — <span class="attr string <keyslug>">[[target]]</span> (the
-        // literal [[...]] text is the only wiki signal; a genuine string value is never
-        // exactly [[x]] since caml-mkdn resolves those as wiki). wikirefs owns resolution,
-        // so upgrade each to a resolved <a> (valid) or invalid <a> (zombie), deriving the
-        // reftype from the span's keyslug. See caml-wikiref-handoff.
+        // string spans — <span class="attr string">[[target]]</span> (the literal
+        // [[...]] text is the only wiki signal; a genuine string value is never
+        // exactly [[x]] since caml-mkdn resolves those as wiki). wikirefs owns
+        // resolution, so upgrade each to a resolved <a> (valid) or invalid <a>
+        // (zombie). NO reftype__ on the anchor: in the joint case caml owns the
+        // attrbox and the key's class rides the <dt> (key__). See caml-wikiref-handoff.
         const attr: string = opts.cssNames?.attr || 'attr';
         const wiki: string = opts.cssNames?.wiki || 'wiki';
-        const reftype: string = opts.cssNames?.reftype || 'reftype__';
         html = html.replace(
-          new RegExp('<span class="' + attr + ' string ([^"]+)">\\[\\[([^\\]]+)\\]\\]</span>', 'g'),
-          (_m: string, keyslug: string, target: string): string => {
+          new RegExp('<span class="' + attr + ' string">\\[\\[([^\\]]+)\\]\\]</span>', 'g'),
+          (_m: string, target: string): string => {
             const href: string | undefined = opts.resolveHtmlHref(target);
             if (href === undefined) {
               // zombie -> invalid, keep the [[brackets]]
@@ -214,7 +214,7 @@ export function wikiattrs(opts: WikiRefsOptions): MarkedExtension {
             }
             const text: string = opts.resolveHtmlText(target) || target;
             const doctype: string | undefined = opts.resolveDocType ? opts.resolveDocType(target) : '';
-            let css: string = `${attr} ${wiki} ${reftype}${keyslug}`;
+            let css: string = `${attr} ${wiki}`;
             if (doctype) {
               css += ` ${opts.cssNames?.doctype || 'doctype__'}${wikirefs.slugify(doctype)}`;
             }

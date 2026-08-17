@@ -143,7 +143,6 @@ Classname for valid wikirefs. Default is `wiki`.
 
 Classname for invalid wikirefs. Default is `invalid`.
 
-
 #### `cssNames.reftype`
 
 Classname for wikiref type. Default is `reftype__` and combined with the slugified form of the user-defined reftype.
